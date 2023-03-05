@@ -34,7 +34,7 @@ FILENAME = 'shoppingcart.pdf'
 
 
 class GetObjectMixin:
-    """Миксин для удаления/добавления рецептов избранных/корзины."""
+    """Миксин для удаления или добавления рецептов избранных или корзины."""
 
     serializer_class = SubscribeRecipeSerializer
     permission_classes = (AllowAny,)
@@ -97,7 +97,7 @@ class AddDeleteFavoriteRecipe(
         GetObjectMixin,
         generics.RetrieveDestroyAPIView,
         generics.ListCreateAPIView):
-    """Добавление и удаление рецепта в/из избранных."""
+    """Добавление (удаление) рецепта в(из) избранное."""
 
     def create(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -113,7 +113,7 @@ class AddDeleteShoppingCart(
         GetObjectMixin,
         generics.RetrieveDestroyAPIView,
         generics.ListCreateAPIView):
-    """Добавление и удаление рецепта в/из корзины."""
+    """Добавление (удаление) рецепта в(из) корзины."""
 
     def create(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -220,7 +220,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         methods=['get'],
         permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request):
-        """Загружаем список с ингредиентами."""
+        """Загрузка списка с ингредиентами."""
 
         buffer = io.BytesIO()
         page = canvas.Canvas(buffer)
