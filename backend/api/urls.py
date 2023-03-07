@@ -8,13 +8,20 @@ from api.views import (AddAndDeleteSubscribe, AddDeleteFavoriteRecipe,
 app_name = 'api'
 
 router = DefaultRouter()
-router.register('users', UsersViewSet)
-router.register('tags', TagsViewSet)
 router.register('ingredients', IngredientsViewSet)
+router.register('users', UsersViewSet)
 router.register('recipes', RecipesViewSet)
-
+router.register('tags', TagsViewSet)
 
 urlpatterns = [
+     path(
+          'users/set_password/',
+          set_password,
+          name='set_password'),
+     path(
+          'users/<int:user_id>/subscribe/',
+          AddAndDeleteSubscribe.as_view(),
+          name='subscribe'),
      path(
           'auth/token/login/',
           AuthToken.as_view(),

@@ -1,13 +1,13 @@
 import django.contrib.auth.password_validation as validators
-from django.contrib.auth import authenticate, get_user_model
+from django.contrib.auth import authenticate
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
 from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
 
-from recipes.models import Ingredient, Recipe, RecipeIngredient, Subscribe, Tag
+from users.models import User, Subscribe
+from recipes.models import Ingredient, Tag, Recipe, RecipeIngredient  
 
-User = get_user_model()
 ERRORE_MESSAGE = 'Не удается войти в систему с введенными учетными данными.'
 
 
@@ -62,8 +62,13 @@ class UserListSerializer(
     class Meta:
         model = User
         fields = (
-            'email', 'id', 'username',
-            'first_name', 'last_name', 'is_subscribed')
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+        )
 
 
 class UserCreateSerializer(serializers.ModelSerializer):
@@ -71,8 +76,13 @@ class UserCreateSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
         fields = (
-            'id', 'email', 'username',
-            'first_name', 'last_name', 'password',)
+            'id',
+            'email',
+            'username',
+            'first_name',
+            'last_name',
+            'password',
+        )
 
     def validate_password(self, password):
         validators.validate_password(password)
@@ -112,7 +122,11 @@ class TagSerializer(serializers.ModelSerializer):
     class Meta:
         model = Tag
         fields = (
-            'id', 'name', 'color', 'slug',)
+            'id',
+            'name',
+            'color',
+            'slug',
+        )
 
 
 class IngredientSerializer(serializers.ModelSerializer):
@@ -133,7 +147,11 @@ class RecipeIngredientSerializer(serializers.ModelSerializer):
     class Meta:
         model = RecipeIngredient
         fields = (
-            'id', 'name', 'measurement_unit', 'amount')
+            'id',
+            'name',
+            'measurement_unit',
+            'amount',
+        )
 
 
 class RecipeUserSerializer(
@@ -146,8 +164,13 @@ class RecipeUserSerializer(
     class Meta:
         model = User
         fields = (
-            'email', 'id', 'username',
-            'first_name', 'last_name', 'is_subscribed')
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+        )
 
 
 class IngredientsEditSerializer(serializers.ModelSerializer):
@@ -157,7 +180,10 @@ class IngredientsEditSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Ingredient
-        fields = ('id', 'amount')
+        fields = (
+            'id',
+            'amount',
+        )
 
 
 class RecipeWriteSerializer(serializers.ModelSerializer):
@@ -271,7 +297,12 @@ class SubscribeRecipeSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Recipe
-        fields = ('id', 'name', 'image', 'cooking_time')
+        fields = (
+            'id',
+            'name',
+            'image',
+            'cooking_time'
+        )
 
 
 class SubscribeSerializer(serializers.ModelSerializer):
@@ -294,8 +325,15 @@ class SubscribeSerializer(serializers.ModelSerializer):
     class Meta:
         model = Subscribe
         fields = (
-            'email', 'id', 'username', 'first_name', 'last_name',
-            'is_subscribed', 'recipes', 'recipes_count',)
+            'email',
+            'id',
+            'username',
+            'first_name',
+            'last_name',
+            'is_subscribed',
+            'recipes',
+            'recipes_count',
+        )
 
     def get_recipes(self, obj):
         request = self.context.get('request')
