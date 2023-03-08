@@ -6,8 +6,7 @@ from django.shortcuts import get_object_or_404
 from drf_base64.fields import Base64ImageField
 
 User, Subscribe = get_user_model()
-from recipes.models import Ingredient, Tag, Recipe, RecipeIngredient
-
+from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 ERRORE_MESSAGE = 'Не удается войти в систему с введенными учетными данными.'
 
 
