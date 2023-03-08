@@ -1,9 +1,9 @@
 import django.contrib.auth.password_validation as validators
 from django.contrib.auth import authenticate
+from drf_base64.fields import Base64ImageField
 from django.shortcuts import get_object_or_404
 from django.contrib.auth import get_user_model
 from django.contrib.auth.hashers import make_password
-from drf_base64.fields import Base64ImageField
 from rest_framework import serializers
 
 from recipes.models import Ingredient, Tag, Recipe, RecipeIngredient
