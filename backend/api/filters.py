@@ -1,9 +1,10 @@
 from django.core.exceptions import ValidationError
+from django.contrib.auth import get_user_model
 import django_filters as filters
 
-from users.models import User
-from recipes.models import Ingredient, Recipe 
+from recipes.models import Ingredient, Recipe
 
+User, Subscribe = get_user_model()
 
 class IngredientFilter(filters.FilterSet):
     name = filters.CharFilter(lookup_expr='startswith')
