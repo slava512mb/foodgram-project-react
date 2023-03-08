@@ -42,12 +42,10 @@ class RecipeAdmin(admin.ModelAdmin):
     def get_author(self, obj):
         return obj.author.email
 
-
     @admin.display(description='Тэги')
     def get_tags(self, obj):
         list_ = [_.name for _ in obj.tags.all()]
         return ', '.join(list_)
-
 
     @admin.display(description=' Ингредиенты ')
     def get_ingredients(self, obj):

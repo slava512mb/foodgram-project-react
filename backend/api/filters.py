@@ -6,6 +6,7 @@ from recipes.models import Ingredient, Recipe
 
 User, Subscribe = get_user_model()
 
+
 class IngredientFilter(filters.FilterSet):
     name = filters.CharFilter(lookup_expr='startswith')
 
