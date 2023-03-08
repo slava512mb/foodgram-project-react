@@ -1,7 +1,7 @@
 import io
 
-from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfgen import canvas
+from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from rest_framework import generics, status, viewsets
 from rest_framework.authtoken.models import Token
