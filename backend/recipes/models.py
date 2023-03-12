@@ -144,7 +144,7 @@ class FavoriteRecipe(models.Model):
         list_ = [item['name'] for item in self.recipe.values('name')]
         return f'Пользователь {self.user} добавил {list_} в избранные.'
 
-  
+
 class ShoppingCart(models.Model):
     user = models.OneToOneField(
         User,
