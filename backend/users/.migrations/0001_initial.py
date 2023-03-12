@@ -75,12 +75,12 @@ class Migration(migrations.Migration):
                     verbose_name='Фамилия')),
                 ('groups', models.ManyToManyField(
                     blank=True,
-                    help_text=('Required. 150 characters ')
-                              ('or fewer. Letters, ')
-                              ('digits and @/./+/-/_ only.'),
                     related_name='user_set',
                     related_query_name='user',
                     to='auth.Group',
+                    help_text=('The groups this user belongs to. ')
+                              ('A user will get all permissions ')
+                              ('granted to each of their groups.'),
                     verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(
                     blank=True,
