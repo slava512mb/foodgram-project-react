@@ -1,12 +1,13 @@
 from rest_framework import serializers
-from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
 import django.contrib.auth.password_validation as validators
 from django.contrib.auth import authenticate, get_user_model
 from django.contrib.auth.hashers import make_password
 from django.shortcuts import get_object_or_404
 from drf_base64.fields import Base64ImageField
+from recipes.models import Ingredient, Recipe, RecipeIngredient, Tag
+from users.models import Subscribe
 
-User, Subscribe = get_user_model()
+User = get_user_model()
 
 ERRORE_MESSAGE = 'Не удается войти в систему с введенными учетными данными.'
 
@@ -201,20 +202,17 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         fields = '__all__'
         read_only_fields = ('author',)
 
-    def validate(self, data):
-        ingredients = data['ingredients']
-        ingredient_list = []
-        for items in ingredients:
-            ingredient = get_object_or_404(
-                Ingredient, id=items['id'])
-            if ingredient in ingredient_list:
-                raise serializers.ValidationError(
-                    'Ингредиенты не могут повторяться!')
-            ingredient_list.append(ingredient)
+    def validate_tags(self, data):
         tags = data['tags']
         if not tags:
             raise serializers.ValidationError(
                 'Нужен минимум один тег!')
+        tags_list = []
+        for tag in tags:
+            if tag in tags_list:
+                raise serializers.ValidationError(
+                    'Теги должны быть уникальными!')
+            tags_list.append(tag)
         for tag_name in tags:
             if not Tag.objects.filter(name=tag_name).exists():
                 raise serializers.ValidationError(
@@ -228,6 +226,14 @@ class RecipeWriteSerializer(serializers.ModelSerializer):
         return cooking_time
 
     def validate_ingredients(self, ingredients):
+        ingredient_list = []
+        for items in ingredients:
+            ingredient = get_object_or_404(
+                Ingredient, id=items['id'])
+            if ingredient in ingredient_list:
+                raise serializers.ValidationError(
+                    'Ингредиенты не могут повторяться!')
+            ingredient_list.append(ingredient)
         if not ingredients:
             raise serializers.ValidationError(
                 'Минимум 1 ингредиент в рецепте!')
@@ -338,9 +344,11 @@ class SubscribeSerializer(serializers.ModelSerializer):
     def get_recipes(self, obj):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
-        recipes = (
-            obj.author.recipe.all()[:int(limit)] if limit
+        recipes = (obj.author.recipe.all()[:int(limit)] if limit
             else obj.author.recipe.all())
+        if limit != 6:
+            raise serializers.ValidationError(
+                'Некорректное число выводимых рецептов')
         return SubscribeRecipeSerializer(
             recipes,
             many=True).data

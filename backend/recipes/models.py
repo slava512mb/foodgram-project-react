@@ -1,8 +1,7 @@
 from django.contrib.auth import get_user_model
 from django.core import validators
+from django.core.validators import RegexValidator
 from django.db import models
-from django.db.models.signals import post_save
-from django.dispatch import receiver
 
 User = get_user_model()
 
@@ -13,12 +12,16 @@ class Ingredient(models.Model):
         max_length=200)
     measurement_unit = models.CharField(
         'Единицы измерения',
-        max_length=200)
+        max_length=7)
 
     class Meta:
         verbose_name = 'Ингредиент'
         verbose_name_plural = 'Ингредиенты'
         ordering = ['name']
+        constraints = [
+            models.UniqueConstraint(
+                fields=('name', 'measurement_unit'),
+                name='unique ingredient')]
 
     def __str__(self):
         return f'{self.name}, {self.measurement_unit}.'
@@ -30,9 +33,17 @@ class Tag(models.Model):
         max_length=60,
         unique=True)
     color = models.CharField(
-        'Цвет',
+        'Цвет в формате HEX-кода',
+        unique=True,
         max_length=7,
-        unique=True)
+        validators=[
+            RegexValidator(
+                regex='^#([A-Fa-f0-9]{6}|[A-Fa-f0-9]{3})$',
+                message='Введенное значение не является цветом в формате HEX!'
+            )
+        ]
+    )
+
     slug = models.SlugField(
         'Ссылка',
         max_length=100,
@@ -53,18 +64,16 @@ class Recipe(models.Model):
         max_length=200)
     author = models.ForeignKey(
         User,
-        related_name='recipe',
+        related_name='recipes',
         on_delete=models.CASCADE,
         verbose_name='Автор')
     image = models.ImageField(
         'Изображение рецепта',
-        upload_to='static/recipe/',
+        upload_to='recipes/',
         blank=True,
         null=True)
     text = models.TextField(
         'Описание рецепта')
-    cooking_time = models.BigIntegerField(
-        'Время приготовления')
     ingredients = models.ManyToManyField(
         Ingredient,
         through='RecipeIngredient')
@@ -135,13 +144,7 @@ class FavoriteRecipe(models.Model):
         list_ = [item['name'] for item in self.recipe.values('name')]
         return f'Пользователь {self.user} добавил {list_} в избранные.'
 
-    @receiver(post_save, sender=User)
-    def create_favorite_recipe(
-            sender, instance, created, **kwargs):
-        if created:
-            return FavoriteRecipe.objects.create(user=instance)
-
-
+  
 class ShoppingCart(models.Model):
     user = models.OneToOneField(
         User,
@@ -162,9 +165,3 @@ class ShoppingCart(models.Model):
     def __str__(self):
         list_ = [item['name'] for item in self.recipe.values('name')]
         return f'Пользователь {self.user} добавил {list_} в покупки.'
-
-    @receiver(post_save, sender=User)
-    def create_shopping_cart(
-            sender, instance, created, **kwargs):
-        if created:
-            return ShoppingCart.objects.create(user=instance)
