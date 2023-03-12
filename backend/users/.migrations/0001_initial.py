@@ -79,8 +79,8 @@ class Migration(migrations.Migration):
                     related_query_name='user',
                     to='auth.Group',
                     help_text=('The groups this user belongs to. ')
-                             ('A user will get all permissions ')
-                             ('granted to each of their groups.'),
+                              ('A user will get all permissions ')
+                              ('granted to each of their groups.'),
                     verbose_name='groups')),
                 ('user_permissions', models.ManyToManyField(
                     blank=True,
