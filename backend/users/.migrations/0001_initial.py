@@ -40,7 +40,7 @@ class Migration(migrations.Migration):
                     error_messages={'unique':
                                     ('A user with that ')
                                     ('username already exists.')},
-                    help_text=('Required. 150 characters')
+                    help_text=('Required. 150 characters ')
                               ('or fewer. Letters, ')
                               ('digits and @/./+/-/_ only.'),
                     max_length=150,
@@ -75,9 +75,9 @@ class Migration(migrations.Migration):
                     verbose_name='Фамилия')),
                 ('groups', models.ManyToManyField(
                     blank=True,
-                    help_text=('The groups this user belongs to. ')
-                              ('A user will get all permissions ')
-                              ('granted to each of their groups.'),
+                    help_text=('Required. 150 characters ')
+                              ('or fewer. Letters, ')
+                              ('digits and @/./+/-/_ only.'),
                     related_name='user_set',
                     related_query_name='user',
                     to='auth.Group',
