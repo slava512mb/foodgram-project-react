@@ -1,7 +1,9 @@
 from django.contrib import admin
 from django.contrib.auth import get_user_model
 
-User, Subscribe = get_user_model()
+from users.models import Subscribe
+
+User = get_user_model()
 
 EMPTY_MESSAGE = '-пусто-'
 

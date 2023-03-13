@@ -344,14 +344,10 @@ class SubscribeSerializer(serializers.ModelSerializer):
     def get_recipes(self, obj):
         request = self.context.get('request')
         limit = request.GET.get('recipes_limit')
-        recipes = (
-            obj.author.recipe.all()[:int(limit)]
-            if limit
-            else obj.author.recipe.all()
+        recipes = obj.recipes.all()
+        if limit:
+            recipes = recipes[:int(limit)]
+        serializer = SubscribeRecipeSerializer(
+            recipes, many=True, read_only=True
         )
-        if limit != 6:
-            raise serializers.ValidationError(
-                'Некорректное число выводимых рецептов')
-        return SubscribeRecipeSerializer(
-            recipes,
-            many=True).data
+        return serializer.data
