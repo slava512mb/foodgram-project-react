@@ -7,6 +7,7 @@ from django.db.models.expressions import Exists, OuterRef, Value
 from django.http import FileResponse
 from django.shortcuts import get_object_or_404
 from djoser.views import UserViewSet
+
 from reportlab.pdfbase import pdfmetrics
 from reportlab.pdfbase.ttfonts import TTFont
 from reportlab.pdfgen import canvas
@@ -19,17 +20,17 @@ from rest_framework.permissions import (SAFE_METHODS, AllowAny,
                                         IsAuthenticated,
                                         IsAuthenticatedOrReadOnly)
 from rest_framework.response import Response
+
 from api.filters import IngredientFilter, RecipeFilter
 from api.permissions import IsAdminOrReadOnly
-from users.models import (Subscribe)
-from recipes.models import (FavoriteRecipe, Ingredient, Recipe,
-                            ShoppingCart, Tag)
-
 from .serializers import (IngredientSerializer, RecipeReadSerializer,
                           RecipeWriteSerializer, SubscribeRecipeSerializer,
                           SubscribeSerializer, TagSerializer, TokenSerializer,
                           UserCreateSerializer, UserListSerializer,
                           UserPasswordSerializer)
+from users.models import (Subscribe)
+from recipes.models import (FavoriteRecipe, Ingredient, Recipe,
+                            ShoppingCart, Tag)
 
 User = get_user_model()
 
