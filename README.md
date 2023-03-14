@@ -3,9 +3,13 @@
 # Продуктовый помощник - приложение Foodgram - Яндекс.Практикум.
 
 После запуска проекта, он будет доступен по адресу:
+
 Локальная машина http://127.0.0.1/
+
 Виртуальная машина: [foodgramcorp.sytes.net](https://foodgramcorp.sytes.net)
+
 Документация к API проекта: [f00dgram.sytes.net/api/docs/](https://foodgramcorp.sytes.net/api/docs/)
+
 Как запустить и посмотреть в действии описано ниже.
 
 ## Описание приложения Foodgram
