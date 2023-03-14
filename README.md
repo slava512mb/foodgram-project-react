@@ -8,7 +8,7 @@
 
 Виртуальная машина: [foodgramcorp.sytes.net](https://foodgramcorp.sytes.net)
 
-Документация к API проекта: [f00dgram.sytes.net/api/docs/](https://foodgramcorp.sytes.net/api/docs/)
+Документация к API проекта: [foodgramcorp.sytes.net/api/docs/](https://foodgramcorp.sytes.net/api/docs/)
 
 Как запустить и посмотреть в действии описано ниже.
 
