@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.contrib.admin import display, register
 
 from .models import (FavoriteRecipe, Ingredient, Recipe, RecipeIngredient,
                      ShoppingCart, Tag)
@@ -11,7 +12,7 @@ class RecipeIngredientAdmin(admin.StackedInline):
     autocomplete_fields = ('ingredient',)
 
 
-@admin.register(Recipe)
+@register(Recipe)
 class RecipeAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -37,17 +38,17 @@ class RecipeAdmin(admin.ModelAdmin):
     inlines = (RecipeIngredientAdmin,)
     empty_value_display = EMPTY_MESSAGE
 
-    @admin.display(
+    @display(
         description='Электронная почта автора')
     def get_author(self, obj):
         return obj.author.email
 
-    @admin.display(description='Тэги')
+    @display(description='Тэги')
     def get_tags(self, obj):
         list_ = [_.name for _ in obj.tags.all()]
         return ', '.join(list_)
 
-    @admin.display(description=' Ингредиенты ')
+    @display(description=' Ингредиенты ')
     def get_ingredients(self, obj):
         return '\n '.join([
             f'{item["ingredient__name"]} - {item["amount"]}'
@@ -56,12 +57,12 @@ class RecipeAdmin(admin.ModelAdmin):
                 'ingredient__name',
                 'amount', 'ingredient__measurement_unit')])
 
-    @admin.display(description='В избранном')
+    @display(description='В избранном')
     def get_favorite_count(self, obj):
         return obj.favorite_recipe.count()
 
 
-@admin.register(Ingredient)
+@register(Ingredient)
 class IngredientAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -75,7 +76,7 @@ class IngredientAdmin(admin.ModelAdmin):
     empty_value_display = EMPTY_MESSAGE
 
 
-@admin.register(Tag)
+@register(Tag)
 class TagAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -90,7 +91,7 @@ class TagAdmin(admin.ModelAdmin):
     empty_value_display = EMPTY_MESSAGE
 
 
-@admin.register(ShoppingCart)
+@register(ShoppingCart)
 class SoppingCartAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -100,17 +101,17 @@ class SoppingCartAdmin(admin.ModelAdmin):
     )
     empty_value_display = EMPTY_MESSAGE
 
-    @admin.display(description='Рецепты')
+    @display(description='Рецепты')
     def get_recipe(self, obj):
         return [
             f'{item["name"]} ' for item in obj.recipe.values('name')[:5]]
 
-    @admin.display(description='В избранных')
+    @display(description='В избранных')
     def get_count(self, obj):
         return obj.recipe.count()
 
 
-@admin.register(FavoriteRecipe)
+@register(FavoriteRecipe)
 class FavoriteRecipeAdmin(admin.ModelAdmin):
     list_display = (
         'id',
@@ -120,13 +121,13 @@ class FavoriteRecipeAdmin(admin.ModelAdmin):
     )
     empty_value_display = EMPTY_MESSAGE
 
-    @admin.display(
+    @display(
         description='Рецепты')
     def get_recipe(self, obj):
         return [
             f'{item["name"]} ' for item in obj.recipe.values('name')[:5]]
 
-    @admin.display(
+    @display(
         description='В избранных')
     def get_count(self, obj):
         return obj.recipe.count()

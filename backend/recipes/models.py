@@ -121,7 +121,7 @@ class RecipeIngredient(models.Model):
         constraints = [
             models.UniqueConstraint(
                 fields=['recipe', 'ingredient'],
-                name='unique ingredient')]
+                name='unique ingredients')]
 
 
 class FavoriteRecipe(models.Model):
