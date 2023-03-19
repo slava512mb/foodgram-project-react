@@ -6,9 +6,7 @@
 
 Локальная машина http://127.0.0.1/
 
-Виртуальная машина: [foodgramcorp.sytes.net](https://foodgramcorp.sytes.net)
-
-Документация к API проекта: [foodgramcorp.sytes.net/api/docs/](https://foodgramcorp.sytes.net/api/docs/)
+Виртуальная машина: http://158.160.6.239/
 
 Как запустить и посмотреть в действии описано ниже.
 
