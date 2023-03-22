@@ -46,7 +46,6 @@ class Tag(models.Model):
 
     slug = models.SlugField(
         'Ссылка',
-        max_length=255,
         unique=True)
 
     class Meta:
