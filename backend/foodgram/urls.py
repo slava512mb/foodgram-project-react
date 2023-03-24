@@ -22,7 +22,6 @@ schema_view = get_schema_view(
 )
 
 apipatterns = [
-    path('', include('users.urls')),
     path('', include('api.urls')),
 ]
 
