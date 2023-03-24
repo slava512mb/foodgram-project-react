@@ -13,9 +13,9 @@ services:
     image: slava512mb/foodgram_backend:latest
     restart: always
     volumes:
-      - data_value:/code/data/
-      - static_value:/code/static/
-      - media_value:/code/media/
+      - data_value:/app/data/
+      - static_value:/app/static/
+      - media_value:/app/media/
     depends_on:
       - db
     env_file:
@@ -33,7 +33,7 @@ services:
     ports:
       - "80:80"
     volumes:
-      - ./nginx/default.conf:/etc/nginx/conf.d
+      - ./nginx/default.conf:/etc/nginx/conf.d/default.conf
       - static_value:/var/html/static/
       - media_value:/var/html/media/
       - ../frontend/build:/usr/share/nginx/html/
