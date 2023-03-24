@@ -1,26 +1,20 @@
+from django.urls import include, path
+from rest_framework.routers import DefaultRouter
+
 from api.views import (AddAndDeleteSubscribe, AddDeleteFavoriteRecipe,
                        AddDeleteShoppingCart, AuthToken, IngredientsViewSet,
                        RecipesViewSet, TagsViewSet, UsersViewSet, set_password)
-from django.urls import include, path
-from rest_framework.routers import DefaultRouter
 
 app_name = 'api'
 
 router = DefaultRouter()
-router.register('ingredients', IngredientsViewSet)
 router.register('users', UsersViewSet)
-router.register('recipes', RecipesViewSet)
 router.register('tags', TagsViewSet)
+router.register('ingredients', IngredientsViewSet)
+router.register('recipes', RecipesViewSet)
+
 
 urlpatterns = [
-     path(
-          'users/set_password/',
-          set_password,
-          name='set_password'),
-     path(
-          'users/<int:user_id>/subscribe/',
-          AddAndDeleteSubscribe.as_view(),
-          name='subscribe'),
      path(
           'auth/token/login/',
           AuthToken.as_view(),

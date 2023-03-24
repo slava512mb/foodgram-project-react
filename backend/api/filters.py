@@ -1,17 +1,8 @@
-import django_filters as filters
-from django.contrib.auth import get_user_model
 from django.core.exceptions import ValidationError
+import django_filters as filters
+
+from users.models import User
 from recipes.models import Ingredient, Recipe
-
-User = get_user_model()
-
-
-class IngredientFilter(filters.FilterSet):
-    name = filters.CharFilter(lookup_expr='startswith')
-
-    class Meta:
-        model = Ingredient
-        fields = ('name',)
 
 
 class TagsMultipleChoiceField(
@@ -33,18 +24,26 @@ class TagsFilter(filters.AllValuesMultipleFilter):
     field_class = TagsMultipleChoiceField
 
 
+class IngredientFilter(filters.FilterSet):
+    name = filters.CharFilter(lookup_expr='istartswith')
+
+    class Meta:
+        model = Ingredient
+        fields = ('name',)
+
+
 class RecipeFilter(filters.FilterSet):
     author = filters.ModelChoiceFilter(
         queryset=User.objects.all())
     is_in_shopping_cart = filters.BooleanFilter(
         widget=filters.widgets.BooleanWidget(),
-        label='Корзина')
+        label='В корзине.')
     is_favorited = filters.BooleanFilter(
         widget=filters.widgets.BooleanWidget(),
-        label='Избранное')
+        label='В избранных.')
     tags = filters.AllValuesMultipleFilter(
         field_name='tags__slug',
-        label='Ссылки')
+        label='Ссылка')
 
     class Meta:
         model = Recipe

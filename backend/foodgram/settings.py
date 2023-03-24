@@ -62,26 +62,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
-
-if DEBUG:
-    DATABASES = {
-        'default': {
-            'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-        }
-    }
-else:
-    DATABASES = {
-        'default': {
+DATABASES = {
+    'default': {
             'ENGINE': os.getenv('DB_ENGINE', 'django.db.backends.postgresql'),
             'NAME': os.getenv('DB_NAME', 'postgres'),
             'USER': os.getenv('POSTGRES_USER', 'postgres'),
             'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'postgres'),
             'HOST': os.getenv('DB_HOST', 'db'),
             'PORT': os.getenv('DB_PORT', '5432')
-        }
     }
-
+}
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -127,10 +117,9 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'api.pagination.PageNumLimitPagination',
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.LimitPageNumberPagination',
     'PAGE_SIZE': 6,
 }
-
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
