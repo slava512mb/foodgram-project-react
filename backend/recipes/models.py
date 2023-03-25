@@ -58,7 +58,7 @@ class Recipe(models.Model):
         max_length=255)
     image = models.ImageField(
         'Изображение рецепта',
-        upload_to='images/')
+        upload_to='recipes/')
     text = models.TextField(
         'Описание рецепта')
     cooking_time = models.BigIntegerField(
