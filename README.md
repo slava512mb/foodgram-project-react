@@ -76,7 +76,7 @@ mkdir infra
 Предварительно из папки /backend и /frontend загрузим актуальные данные на DockerHub (на вашем ПК):
 
 ```bash
-docker login -u themasterid
+docker login -u slava512mb
 ```
 
 ```bash
