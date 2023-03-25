@@ -62,6 +62,7 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'foodgram.wsgi.application'
 
+
 if DEBUG:
     DATABASES = {
         'default': {
@@ -80,6 +81,7 @@ else:
             'PORT': os.getenv('DB_PORT', '5432')
         }
     }
+
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -125,9 +127,10 @@ REST_FRAMEWORK = {
         'django_filters.rest_framework.DjangoFilterBackend',
         'rest_framework.filters.SearchFilter',
     ],
-    'DEFAULT_PAGINATION_CLASS': 'api.pagination.LimitPageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'api.pagination.PageNumLimitPagination',
     'PAGE_SIZE': 6,
 }
+
 
 SIMPLE_JWT = {
     'ACCESS_TOKEN_LIFETIME': timedelta(days=1),
