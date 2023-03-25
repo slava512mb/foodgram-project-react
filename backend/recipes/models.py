@@ -51,16 +51,14 @@ class Recipe(models.Model):
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
-        related_name='recipe',
+        related_name='author',
         verbose_name='Автор')
     name = models.CharField(
         'Название рецепта',
         max_length=255)
     image = models.ImageField(
         'Изображение рецепта',
-        upload_to='images/',
-        blank=True,
-        null=True)
+        upload_to='images/')
     text = models.TextField(
         'Описание рецепта')
     cooking_time = models.BigIntegerField(
