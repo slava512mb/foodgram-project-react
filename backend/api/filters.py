@@ -36,13 +36,13 @@ class RecipeFilter(filters.FilterSet):
         queryset=User.objects.all())
     is_in_shopping_cart = filters.BooleanFilter(
         widget=filters.widgets.BooleanWidget(),
-        label='Корзина')
+        label='В корзине.')
     is_favorited = filters.BooleanFilter(
         widget=filters.widgets.BooleanWidget(),
-        label='Избранное')
+        label='В избранных.')
     tags = filters.AllValuesMultipleFilter(
         field_name='tags__slug',
-        label='Ссылки')
+        label='Ссылка')
 
     class Meta:
         model = Recipe
