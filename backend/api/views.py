@@ -34,7 +34,7 @@ FILENAME = 'shoppingcart.pdf'
 
 
 class GetObjectMixin:
-    """Миксин для добавления или удаления рецептов из избранных или корзины."""
+    """Миксина для удаления/добавления рецептов избранных/корзины."""
 
     serializer_class = SubscribeRecipeSerializer
     permission_classes = (AllowAny,)
@@ -47,7 +47,7 @@ class GetObjectMixin:
 
 
 class PermissionAndPaginationMixin:
-    """Миксин для списка ингридиентов и тегов."""
+    """Миксина для списка тегов и ингридиентов."""
 
     permission_classes = (IsAdminOrReadOnly,)
     pagination_class = None
@@ -56,7 +56,7 @@ class PermissionAndPaginationMixin:
 class AddAndDeleteSubscribe(
         generics.RetrieveDestroyAPIView,
         generics.ListCreateAPIView):
-    """Подписка и отписка от пользователей."""
+    """Подписка и отписка от пользователя."""
 
     serializer_class = SubscribeSerializer
 
@@ -79,11 +79,11 @@ class AddAndDeleteSubscribe(
         instance = self.get_object()
         if request.user.id == instance.id:
             return Response(
-                {'errors': 'Нельзя подписаться на себя'},
+                {'errors': 'На самого себя не подписаться!'},
                 status=status.HTTP_400_BAD_REQUEST)
         if request.user.follower.filter(author=instance).exists():
             return Response(
-                {'errors': 'Подписка уже существует'},
+                {'errors': 'Уже подписан!'},
                 status=status.HTTP_400_BAD_REQUEST)
         subs = request.user.follower.create(author=instance)
         serializer = self.get_serializer(subs)
@@ -97,7 +97,7 @@ class AddDeleteFavoriteRecipe(
         GetObjectMixin,
         generics.RetrieveDestroyAPIView,
         generics.ListCreateAPIView):
-    """Добавление (удаление) рецептов в(из) избранное."""
+    """Добавление и удаление рецепта в/из избранных."""
 
     def create(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -113,7 +113,7 @@ class AddDeleteShoppingCart(
         GetObjectMixin,
         generics.RetrieveDestroyAPIView,
         generics.ListCreateAPIView):
-    """Добавление (удаление) рецептов в(из) корзины."""
+    """Добавление и удаление рецепта в/из корзины."""
 
     def create(self, request, *args, **kwargs):
         instance = self.get_object()
@@ -170,7 +170,7 @@ class UsersViewSet(UserViewSet):
         detail=False,
         permission_classes=(IsAuthenticated,))
     def subscriptions(self, request):
-        """На кого подписан пользователь."""
+        """Получить на кого пользователь подписан."""
 
         user = request.user
         queryset = Subscribe.objects.filter(user=user)
@@ -203,21 +203,14 @@ class RecipesViewSet(viewsets.ModelViewSet):
                     user=self.request.user,
                     recipe=OuterRef('id')))
         ).select_related('author').prefetch_related(
-            'tags',
-            'ingredients',
-            'recipe',
-            'shopping_cart',
-            'favorite_recipe',
+            'tags', 'ingredients', 'recipe',
+            'shopping_cart', 'favorite_recipe'
         ) if self.request.user.is_authenticated else Recipe.objects.annotate(
             is_in_shopping_cart=Value(False),
             is_favorited=Value(False),
         ).select_related('author').prefetch_related(
-            'tags',
-            'ingredients',
-            'recipe',
-            'shopping_cart',
-            'favorite_recipe',
-        )
+            'tags', 'ingredients', 'recipe',
+            'shopping_cart', 'favorite_recipe')
 
     def perform_create(self, serializer):
         serializer.save(author=self.request.user)
@@ -227,7 +220,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         methods=['get'],
         permission_classes=(IsAuthenticated,))
     def download_shopping_cart(self, request):
-        """Загрузка списка с ингредиентами."""
+        """Качаем список с ингредиентами."""
 
         buffer = io.BytesIO()
         page = canvas.Canvas(buffer)
@@ -261,7 +254,7 @@ class RecipesViewSet(viewsets.ModelViewSet):
         page.drawString(
             x_position,
             y_position,
-            'Cписок покупок пуст')
+            'Cписок покупок пуст!')
         page.save()
         buffer.seek(0)
         return FileResponse(buffer, as_attachment=True, filename=FILENAME)
@@ -296,8 +289,8 @@ def set_password(request):
     if serializer.is_valid():
         serializer.save()
         return Response(
-            {'message': 'Пароль изменен'},
+            {'message': 'Пароль изменен!'},
             status=status.HTTP_201_CREATED)
     return Response(
-        {'error': 'Введите верные данные'},
+        {'error': 'Введите верные данные!'},
         status=status.HTTP_400_BAD_REQUEST)
