@@ -1,5 +1,3 @@
-import io
-
 from api.filters import IngredientFilter, RecipeFilter
 from api.permissions import IsAdminOrReadOnly
 from django.contrib.auth import get_user_model
