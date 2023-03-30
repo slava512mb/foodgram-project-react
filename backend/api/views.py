@@ -25,7 +25,7 @@ from .serializers import (IngredientSerializer, RecipeReadSerializer,
                           UserPasswordSerializer)
 
 User = get_user_model()
-FILENAME = 'shoppingcart.pdf'
+FILENAME = 'shopping-list.txt'
 
 
 class GetObjectMixin:
